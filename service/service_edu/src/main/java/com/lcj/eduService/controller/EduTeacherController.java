@@ -9,6 +9,7 @@ import com.lcj.eduService.entity.vo.TeacherQuery;
 import com.lcj.eduService.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ import java.util.Map;
 @Api(description = "讲师管理")
 @RestController
 @RequestMapping("/eduService/teacher")
+@Slf4j
 public class EduTeacherController {
 
     @Autowired
@@ -120,10 +122,32 @@ public class EduTeacherController {
     }
 
 
+    //添加讲师
+    @PostMapping("addTeacher")
+    public R addTeacher(@RequestBody EduTeacher eduTeacher){
+        boolean save = eduTeacherService.save(eduTeacher);
+        if(!save){
+            return R.error();
+        }
+        return R.ok();
+    }
 
 
+    //根据id查询讲师
+    @GetMapping("getTeacher/{id}")
+    public R getTeacher(@PathVariable String id){
+        EduTeacher eduTeacher = eduTeacherService.getById(id);
+        return R.ok().data("teacher",eduTeacher);
+    }
 
-
+    @PostMapping("updateTeacher")
+    public R updateTeacher(@RequestBody EduTeacher eduTeacher){
+        boolean flag = eduTeacherService.updateById(eduTeacher);
+        if(!flag){
+            return R.error();
+        }
+        return R.ok();
+    }
 
 
 
