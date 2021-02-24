@@ -30,6 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/eduService/teacher")
 @Slf4j
+@CrossOrigin
 public class EduTeacherController {
 
     @Autowired
@@ -60,7 +61,7 @@ public class EduTeacherController {
      * @param limit 每页记录数
      * @return
      */
-    @GetMapping("pageTeacher/{current}/{limit}")
+    @PostMapping("pageTeacher/{current}/{limit}")
     public R pageListTeacher(@PathVariable long current,
                              @PathVariable long limit){
 
@@ -112,6 +113,8 @@ public class EduTeacherController {
         if(!StringUtils.isEmpty(end)){
             wrapper.le("gnt_create",end);
         }
+
+        wrapper.orderByDesc("gnt_create");
         eduTeacherService.page(pageTeacher,wrapper);
         long total = pageTeacher.getTotal();
         List<EduTeacher> records=pageTeacher.getRecords();
